@@ -45,6 +45,11 @@ http.Server(app);
 
 app.use(express.json())
 
+app.get("/", (req, res) => {
+  res.send("hello world")
+})
+
+
 // app.get("/", express.static(path.join(__dirname, './../uploads')));
 app.get('/uploads/:fileName', function (req, res) {
   const filePath = path.join(__dirname, './../uploads', req.params.fileName)

@@ -41,7 +41,7 @@ services:
   filestore:
     image: "$OWNER/collagefilestore:$VERSION"
     command: ["npm", "run", "start"]
-    restart: always
+    restart: unless-stopped
     ports:
       - 3030:3000
     volumes:

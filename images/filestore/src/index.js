@@ -22,7 +22,10 @@ const storage = multer.diskStorage({
   filename: function (req, file, cb) {
     console.log(file)
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-    var ext = file.originalname.split('.').pop();
+    let ext = file.originalname.split('.').pop();
+    if(ext == "blob") {
+      ext = "png"
+    }
     req.body.imageURI =  file.fieldname + '-' + uniqueSuffix + '.' + ext;
     cb(null, file.fieldname + '-' + uniqueSuffix + '.' + ext)
   }
@@ -97,7 +100,7 @@ app.post('/upload', upload.single('clipping'), async (req, res) => {
   // if want to save original, delete this
   fs.unlinkSync(req.file.path)
 
-  var hostname = req.protocol + '://' + req.get('host');
+  const hostname = req.protocol + '://' + req.get('host');
   // req.body will hold the text fields, if there were any
   res.send({
     200: `${hostname}/uploads/200/${req.body.imageURI}`,

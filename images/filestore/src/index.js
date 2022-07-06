@@ -4,7 +4,7 @@ import express from "express";
 import multer from "multer"
 import path  from "path";
 import fs  from "fs";
-
+import sharp from 'sharp';
 
 
 // fix __dirname
@@ -51,6 +51,17 @@ app.get("/", (req, res) => {
 
 
 // app.get("/", express.static(path.join(__dirname, './../uploads')));
+app.get('/uploads/200/:fileName', function (req, res) {
+  const filePath = path.join(__dirname, './../uploads/200', req.params.fileName)
+  res.sendFile(filePath);
+});
+// app.get("/", express.static(path.join(__dirname, './../uploads')));
+app.get('/uploads/400/:fileName', function (req, res) {
+  const filePath = path.join(__dirname, './../uploads/400', req.params.fileName)
+  res.sendFile(filePath);
+});
+
+// app.get("/", express.static(path.join(__dirname, './../uploads')));
 app.get('/uploads/:fileName', function (req, res) {
   const filePath = path.join(__dirname, './../uploads', req.params.fileName)
   res.sendFile(filePath);
@@ -58,12 +69,40 @@ app.get('/uploads/:fileName', function (req, res) {
 
 
 
-app.post('/upload', upload.single('clipping'), function (req, res, next) {
-  // req.file is the `avatar` file
-  console.log(req.body)
+app.post('/upload', upload.single('clipping'), async (req, res) => {
+
+  const { filename: image } = req.file;
+
+  await sharp(req.file.path)
+  .resize(400)
+  .jpeg({ quality: 90 })
+  .toFile(
+      path.resolve(req.file.destination,'200', image)
+  )
+
+  await sharp(req.file.path)
+  .resize(200)
+  .jpeg({ quality: 90 })
+  .toFile(
+      path.resolve(req.file.destination,'400', image)
+  )
+
+  await sharp(req.file.path)
+  .resize(800)
+  .jpeg({ quality: 90 })
+  .toFile(
+      path.resolve(req.file.destination,'800', image)
+  )
+
+  // if want to save original, delete this
+  fs.unlinkSync(req.file.path)
+
+  var hostname = req.protocol + '://' + req.get('host');
   // req.body will hold the text fields, if there were any
   res.send({
-    imageURI: req.body.imageURI
+    200: `${hostname}/uploads/200/${req.body.imageURI}`,
+    400: `${hostname}/uploads/400/${req.body.imageURI}`,
+    800: `${hostname}/uploads/800/${req.body.imageURI}`
   })
 })
 

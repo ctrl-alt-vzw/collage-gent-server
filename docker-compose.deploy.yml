@@ -36,6 +36,18 @@ services:
       collageStore:
         condition: service_healthy
 
+
+
+  filestore:
+    image: "$OWNER/collagefilestore:$VERSION"
+    command: ["npm", "run", "start"]
+    restart: always
+    ports:
+      - 3030:3000
+    volumes:
+      - ./_uploads:/usr/app/uploads
+
+
   caddy:
     image: caddy/caddy:2.2.1-alpine
     container_name: caddy-service

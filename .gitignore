@@ -1,7 +1,8 @@
 /.DS_Store
 .DS_Store
 /_volumes
-/data/state/
+/_uploads
 .env
 .VSCodeCounter/
 package-*.json
+*/*/node_modules/

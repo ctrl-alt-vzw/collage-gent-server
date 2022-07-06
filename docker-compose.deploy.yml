@@ -1,0 +1,81 @@
+version: "3.8"
+
+services:
+  
+  collageStore:
+    image: "postgres:latest"
+    ports:
+      - 5432:5432
+    command: postgres -c stats_temp_directory=/tmp
+    environment:
+      POSTGRES_HOST:
+      POSTGRES_USER:
+      POSTGRES_DATABASE:
+      POSTGRES_PASSWORD:
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER -d $POSTGRES_DATABASE "]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - ./_volumes/collageStore:/var/lib/postgresql/data
+
+  api:
+    build: ./images/api
+    image: "$OWNER/collageapi:$VERSION"
+    command: ["npm", "run", "start"]
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER:
+      POSTGRES_DATABASE:
+      POSTGRES_PASSWORD:
+      POSTGRES_HOST: collageStore
+      MQTT_ADDR: 
+      MQTT_PORT: 1883
+      LIFELINE_TIME:
+      LOG_LIFELINE:
+    ports:
+      - 3000:3000
+    depends_on:
+      collageStore:
+        condition: service_healthy
+    volumes:
+      - ./images/api/src:/usr/app/src
+
+  caddy:
+    image: caddy/caddy:2.2.1-alpine
+    container_name: caddy-service
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - $PWD/Caddyfile:/etc/caddy/Caddyfile
+      - $PWD/site:/srv
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_data:
+
+
+
+  # filestore:
+  #   build: ./images/filestore
+  #   image: "$OWNER/collagefilestore:$VERSION"
+  #   command: ["npm", "run", "dev"]
+  #   restart: always
+  #   environment:
+  #     POSTGRES_USER:
+  #     POSTGRES_DATABASE:
+  #     POSTGRES_PASSWORD:
+  #     POSTGRES_HOST: collageStore
+  #   ports:
+  #     - 3030:3000
+  #   depends_on:
+  #     collageStore:
+  #       condition: service_healthy
+  #   volumes:
+  #     - ./images/filestore/src:/usr/app/src
+  #     - ./_uploads:/usr/app/uploads

@@ -1,0 +1,7 @@
+/.DS_Store
+.DS_Store
+/_volumes
+/data/state/
+.env
+.VSCodeCounter/
+package-*.json

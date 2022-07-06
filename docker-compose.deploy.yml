@@ -22,7 +22,6 @@ services:
       - ./_volumes/collageStore:/var/lib/postgresql/data
 
   api:
-    build: ./images/api
     image: "$OWNER/collageapi:$VERSION"
     command: ["npm", "run", "start"]
     restart: unless-stopped
@@ -31,17 +30,11 @@ services:
       POSTGRES_DATABASE:
       POSTGRES_PASSWORD:
       POSTGRES_HOST: collageStore
-      MQTT_ADDR: 
-      MQTT_PORT: 1883
-      LIFELINE_TIME:
-      LOG_LIFELINE:
     ports:
       - 3000:3000
     depends_on:
       collageStore:
         condition: service_healthy
-    volumes:
-      - ./images/api/src:/usr/app/src
 
   caddy:
     image: caddy/caddy:2.2.1-alpine
@@ -55,6 +48,12 @@ services:
       - $PWD/site:/srv
       - caddy_data:/data
       - caddy_config:/config
+
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    
 
 volumes:
   caddy_data:

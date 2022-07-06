@@ -32,11 +32,14 @@ http.Server(app);
 app.use(express.json())
 
 app.get("/", async (req, res) => {
-  await pg.select("*").table("clippings").orderBy("id", "DESC").limit(500).then((data) => {
-    res.send(data)
-  })
-  .catch((e) => {
-    res.status(500).send(e)
+  res.send({
+    "endpoints": {
+      "GET /annotation": "display all records",
+      "GET /annotation/empty": "Display all records with empty annotation",
+      "PATCH /annotation/[UUID]": "update an annotation, body: {annotation: [new annotation]}",
+      "DELETE /annotation/[UUID]": "Delete a record",
+      "POST /annotation": "Add a record, needs { imageURI, id, origin }"
+    }
   })
 })
 app.delete("/annotation/:uuid", async (req, res) => {
@@ -64,7 +67,7 @@ app.patch("/annotation/:uuid", async(req, res) => {
     res.status(400).send(e)
   })
 })
-app.post("/annotation/new", async(req, res) => {
+app.post("/annotation", async(req, res) => {
   console.log("saving")
   const b = req.body;
   if(b.label && b.id && b.imageURI) {

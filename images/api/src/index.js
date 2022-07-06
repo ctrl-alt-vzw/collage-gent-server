@@ -46,7 +46,6 @@ app.get("/", async (req, res) => {
         "GET /clipping": "display all records",
         "DELETE /clipping/[UUID]": "Delete a record",
         "POST /clipping": "Add a record, needs { originID, collection, x, y, imageURI }"
-
       }
     },
     "version": "0.1"

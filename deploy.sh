@@ -6,4 +6,4 @@ git pull
 
 echo "updated, now building"
 
-docker-compose up -d --build
+docker-compose -f docker-compose.deploy.yml up -d --build

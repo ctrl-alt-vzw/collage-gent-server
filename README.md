@@ -17,3 +17,6 @@
 // cuestack checkup
 // send more godmode info (at every step)
 // trigger viz by qlab
+
+
+ssh root@206.189.5.89

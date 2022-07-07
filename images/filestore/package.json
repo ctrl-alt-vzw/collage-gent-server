@@ -7,6 +7,9 @@
     "dev": "nodemon src/index.js",
     "start": "node src/index.js"
   },
+  "nodemonConfig": {
+      "ignore": ["logs/*", "uploads/*"]
+  },
   "type": "module",
   "author": "",
   "license": "ISC",

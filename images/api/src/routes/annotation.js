@@ -17,10 +17,12 @@ export default function annotation(app, pg) {
     })
   })
   app.patch("/annotation/:uuid", async(req, res) => {
+    console.log(req.body)
     const toUpdate = {
       annotation: req.body.annotation
     }
-    await pg.update(toUpdate).table("annotations").returning("*").then((data) => {
+    console.log(toUpdate)
+    await pg.update(toUpdate).table("annotations").where({UUID: req.params.uuid}).returning("*").then((data) => {
       res.send(data)
     })
     .catch(e => {
@@ -44,6 +46,7 @@ export default function annotation(app, pg) {
           res.status(200).send({message: "already exists"})
         } else {
           await pg.insert(toInsert).table("annotations").returning("*").then((d) => {
+            console.log("added")
             res.send(d);
           })
         }

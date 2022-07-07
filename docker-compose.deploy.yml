@@ -48,6 +48,14 @@ services:
       - ./_uploads:/usr/app/uploads
 
 
+  touch:
+    image: "$OWNER/collagetouch:$VERSION"
+    command: ["npm", "run", "start"]
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+
+
   caddy:
     image: caddy/caddy:2.2.1-alpine
     container_name: caddy-service

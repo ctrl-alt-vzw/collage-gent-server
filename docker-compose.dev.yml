@@ -62,3 +62,14 @@ services:
       - 3333:3000
     volumes:
       - ./images/seeder/src:/usr/app/src
+      - ./_logs/seeder:/usr/app/logs
+
+  touch:
+    build: ./images/touch
+    image: "$OWNER/collagetouch:$VERSION"
+    command: ["npm", "run", "dev"]
+    restart: always
+    ports:
+      - 8080:8080
+    volumes:
+      - ./images/touch/src:/usr/app/src

@@ -52,3 +52,13 @@ services:
     volumes:
       - ./images/filestore/src:/usr/app/src
       - ./_uploads:/usr/app/uploads
+
+  seeder:
+    build: ./images/seeder
+    # image: "$OWNER/collageseeder:$VERSION"
+    command: ["npm", "run", "dev"]
+    restart: always
+    ports:
+      - 3333:3000
+    volumes:
+      - ./images/seeder/src:/usr/app/src

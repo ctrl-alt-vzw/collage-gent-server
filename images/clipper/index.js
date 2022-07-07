@@ -27,8 +27,6 @@ const app = {
       const clippingWidth = this.userDrawn.sort((a, b) => b.x - a.x)[0].x - startClippingX;
       const clippingHeight = this.userDrawn.sort((a, b) => b.y - a.y)[0].y - startClippingY;
 
-      console.log(startClippingX, startClippingY, clippingWidth, clippingHeight)
-
 
       const hidden_canvas = document.createElement("canvas");
       const hidden_ctx = hidden_canvas.getContext('2d');
@@ -48,19 +46,25 @@ const app = {
       );
 
 
-      link.href = hidden_canvas.toDataURL(strMime);
-
-
       const b64Image = hidden_canvas.toDataURL(strMime);
       const u8Image  = this.b64ToUint8Array(b64Image);
       const formData = new FormData();
       formData.append("clipping", new Blob([ u8Image ], {type: strMime}));
-      const xhr = new XMLHttpRequest();
-      xhr.open("POST", "http://localhost:3030/upload", true);
-      xhr.send(formData);
-      // link.download = 'test1.png';
-      // link.click();
-      // instead of download, upload
+      // const xhr = new XMLHttpRequest();
+      // xhr.open("POST", "http://localhost:3030/upload", true);
+      // xhr.send(formData);
+      fetch(`http://localhost:3030/upload`, {
+        method: 'POST',
+        body: formData
+      })
+        .then(r => r.json())
+        .then((data) => {
+          console.log(data)
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+      
     })
 
     document.getElementById("clipper").addEventListener("click", (e) => {

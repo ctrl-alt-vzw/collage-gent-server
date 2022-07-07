@@ -2,7 +2,7 @@
 import http from 'http';
 import express from "express";
 import knex from "knex";
-
+import cors from 'cors';
 import createTables from "./db/helpers.js";
 
 import annotation from './routes/annotation.js';
@@ -30,6 +30,7 @@ const port = 3000;
 
 const app = express();
 http.Server(app); 
+app.use(cors())
 app.use(express.json())
 
 app.get("/", async (req, res) => {

@@ -4,7 +4,7 @@ const express = require('express');
 
 
 const isDeveloping = process.env.NODE_ENV !== 'production';
-const port = isDeveloping ? 8080 : process.env.PORT;
+const port = isDeveloping ? 8080 : process.env.TOUCH_PORT;
 const app = express();
 
 const staticPath = path.join(__dirname, '../dist')

@@ -73,3 +73,13 @@ services:
       - 8080:8080
     volumes:
       - ./images/touch/src:/usr/app/src
+
+  clipper:
+    build: ./images/clipper
+    image: "$OWNER/collageclipper:$VERSION"
+    command: ["npm", "run", "dev"]
+    restart: always
+    ports:
+      - 8001:8001
+    volumes:
+      - ./images/clipper/src:/usr/app/src

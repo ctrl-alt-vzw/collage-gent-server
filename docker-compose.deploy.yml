@@ -54,6 +54,14 @@ services:
       TOUCH_PORT:
       NODE_ENV:
 
+  clipper:
+    image: "$OWNER/collageclipper:$VERSION"
+    command: ["npm", "run", "start"]
+    restart: unless-stopped
+    environment:
+      CLIPPER_PORT:
+      NODE_ENV:
+
 
   caddy:
     image: caddy/caddy:2.2.1-alpine

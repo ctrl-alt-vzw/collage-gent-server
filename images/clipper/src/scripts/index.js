@@ -1,3 +1,7 @@
+"use strict"
+
+const URL = "https://media.datacratie.cc"
+
 const app = {
   userDrawn: [],
   cutOut: false,
@@ -51,7 +55,7 @@ const app = {
       // const xhr = new XMLHttpRequest();
       // xhr.open("POST", "http://localhost:3030/upload", true);
       // xhr.send(formData);
-      fetch(`http://localhost:3030/upload`, {
+      fetch(`${URL}/upload`, {
         method: 'POST',
         body: formData
       })

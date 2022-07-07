@@ -30,8 +30,6 @@ services:
       POSTGRES_DATABASE:
       POSTGRES_PASSWORD:
       POSTGRES_HOST: collageStore
-    ports:
-      - 3000:3000
     depends_on:
       collageStore:
         condition: service_healthy
@@ -52,8 +50,6 @@ services:
     image: "$OWNER/collagetouch:$VERSION"
     command: ["npm", "run", "start"]
     restart: unless-stopped
-    ports:
-      - 8080:8080
 
 
   caddy:

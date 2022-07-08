@@ -14,6 +14,8 @@ export default async function createTables(pg) {
         t.string('placedAt', 1000);
         t.integer("x");
         t.integer("y");
+        t.integer("width");
+        t.integer("height");
         t.timestamps(true, true);
       })
 

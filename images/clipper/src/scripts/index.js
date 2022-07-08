@@ -1,6 +1,6 @@
 "use strict"
 
-const URL = "https://media.datacratie.cc"
+const URL = "datacratie.cc"
 
 const app = {
   userDrawn: [],
@@ -55,13 +55,37 @@ const app = {
       // const xhr = new XMLHttpRequest();
       // xhr.open("POST", "http://localhost:3030/upload", true);
       // xhr.send(formData);
-      fetch(`${URL}/upload`, {
+      fetch(`https://media.${URL}/upload`, {
         method: 'POST',
         body: formData
       })
         .then(r => r.json())
         .then((data) => {
           console.log(data)
+
+          const toSend = {
+            imageURI: data["800"],
+            originID: "u",
+            collection: "u",
+            x: 10,
+            y: 10,
+            height: clippingHeight,
+            width: clippingWidth
+          }
+          console.log(toSend)
+          fetch(`https://api.datacratie.cc/clipping`, {
+            headers: {
+              'Accept': 'application/json, text/plain, */*',
+              'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify(toSend)
+          })
+          .then(r=>r.text())
+          .then((data) => {
+            console.log("saved as", data)
+          })
+
         })
         .catch((e) => {
           console.log(e)

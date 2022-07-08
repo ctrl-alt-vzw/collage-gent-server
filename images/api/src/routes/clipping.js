@@ -30,15 +30,19 @@ export default function clipping(app, pg) {
   app.post("/clipping", async(req, res) => {
     console.log("saving")
     const b = req.body;
-    if(b.originID && b.collection && b.x && b.y && b.imageURI) {
+
+    console.log(b.originID, b.collection, b.x, b.y, b.imageURI);
+    if(b.originID && b.collection && b.imageURI && b.width&& b.height) {
       const toInsert = {
         imageURI: b.imageURI,
         UUID: generateUUID(),
-        originID: b.id,
-        collection: b.origin,
+        originID: b.originID,
+        collection: b.collection,
         placedAt: "",
         x: b.x,
-        y: b.y
+        y: b.y,
+        width: b.width,
+        height: b.height
       }
       await pg.insert(toInsert).table("clippings").returning("*").then((d) => {
         res.send(d);

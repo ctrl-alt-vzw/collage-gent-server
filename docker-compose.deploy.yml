@@ -46,21 +46,21 @@ services:
       - ./_uploads:/usr/app/uploads
 
 
-  touch:
-    image: "$OWNER/collagetouch:$VERSION"
-    command: ["npm", "run", "start"]
-    restart: unless-stopped
-    environment:
-      TOUCH_PORT:
-      NODE_ENV:
+  # touch:
+  #   image: "$OWNER/collagetouch:$VERSION"
+  #   command: ["npm", "run", "start"]
+  #   restart: unless-stopped
+  #   environment:
+  #     TOUCH_PORT:
+  #     NODE_ENV:
 
-  clipper:
-    image: "$OWNER/collageclipper:$VERSION"
-    command: ["npm", "run", "start"]
-    restart: unless-stopped
-    environment:
-      CLIPPER_PORT:
-      NODE_ENV:
+  # clipper:
+  #   image: "$OWNER/collageclipper:$VERSION"
+  #   command: ["npm", "run", "start"]
+  #   restart: unless-stopped
+  #   environment:
+  #     CLIPPER_PORT:
+  #     NODE_ENV:
 
 
   caddy:

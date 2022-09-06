@@ -8,6 +8,7 @@ export default async function createTables(pg) {
       return pg.schema.createTable('clippings', function(t) {
         t.increments('id').primary();
         t.string('imageURI', 1000);
+        t.string('normal', 1000);
         t.string('UUID', 1000);
         t.string('originID', 1000);
         t.string('collection', 1000);

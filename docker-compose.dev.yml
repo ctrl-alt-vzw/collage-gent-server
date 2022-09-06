@@ -70,7 +70,7 @@ services:
     command: ["npm", "run", "dev"]
     restart: always
     ports:
-      - 8080:8080
+      - 8000:8000
     volumes:
       - ./images/touch/src:/usr/app/src
 

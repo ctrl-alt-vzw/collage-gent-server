@@ -13,6 +13,7 @@ module.exports = {
   },
   devServer: {
     static: './dist',
+    port: 8000
   },
   devtool: 'inline-source-map',
   plugins: [

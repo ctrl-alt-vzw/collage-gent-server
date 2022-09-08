@@ -43,4 +43,21 @@ export default async function createTables(pg) {
     }
   })
 
+
+  pg.schema.hasTable('errors').then(function(exists) {
+    if (!exists) {
+      return pg.schema.createTable('errors', function(t) {
+        t.increments('id').primary();
+        t.string('UUID', 1000);
+        t.string('uri', 1000);
+        t.integer("validated").defaultTo(0);
+        t.timestamps(true, true);
+      })
+
+    } else {
+      console.log("tables errors exist")
+
+    }
+  })
+
 };

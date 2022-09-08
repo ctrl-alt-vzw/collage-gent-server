@@ -72,7 +72,7 @@ app.get('/uploads/400/:fileName', function (req, res) {
 });
 // app.get("/", express.static(path.join(__dirname, './../uploads')));
 app.get('/uploads/800/:fileName', function (req, res) {
-  const filePath = path.join(__dirname, './../uploads', req.params.fileName)
+  const filePath = path.join(__dirname, './../uploads/800', req.params.fileName)
   res.sendFile(filePath);
 });
 
@@ -100,28 +100,28 @@ app.post('/upload', cpUpload, async (req, res) => {
 
   await sharp(req.files['clipping'][0].path)
   .resize(400)
-  .jpeg({ quality: 90 })
+  .png()
   .toFile(
       path.resolve(req.files['clipping'][0].destination, '200', image)
   )
 
   await sharp(req.files['clipping'][0].path)
   .resize(200)
-  .jpeg({ quality: 90 })
+  .png()
   .toFile(
       path.resolve(req.files['clipping'][0].destination, '400', image)
   )
 
   await sharp(req.files['clipping'][0].path)
   .resize(800)
-  .jpeg({ quality: 90 })
+  .png()
   .toFile(
       path.resolve(req.files['clipping'][0].destination, '800', image)
   )
 
   await sharp(req.files['normal'][0].path)
   .resize(400)
-  .jpeg({ quality: 90 })
+  .png()
   .toFile(
       path.resolve(req.files['normal'][0].destination, 'normal', normal)
   )
@@ -131,12 +131,12 @@ app.post('/upload', cpUpload, async (req, res) => {
   fs.unlinkSync(req.files['normal'][0].path)
 
   const hostname = req.protocol + '://' + req.get('host');
-  // req.body will hold the text fields, if there were any
+
   res.send({
-    200: `${hostname}/uploads/200/${req.body.imageURI}`,
-    400: `${hostname}/uploads/400/${req.body.imageURI}`,
-    800: `${hostname}/uploads/800/${req.body.imageURI}`,
-    normal: `${hostname}/uploads/normal/${req.body.imageURI}`
+    200: `${hostname}/uploads/200/${req.files['clipping'][0].filename}`,
+    400: `${hostname}/uploads/400/${req.files['clipping'][0].filename}`,
+    800: `${hostname}/uploads/800/${req.files['clipping'][0].filename}`,
+    normal: `${hostname}/uploads/normal/${req.files['normal'][0].filename}`
   })
 })
 

@@ -2,7 +2,7 @@
 import http from 'http';
 import express from "express";
 import cors from 'cors';
-// import {startEventStream} from "./LDES.js"
+import {startEventStream, seedFetch} from "./LDES.js"
 
 // import { sendToDB, appendToFile} from './helpers.js'
 
@@ -21,6 +21,11 @@ app.get("/", (req, res) => {
 
 app.get("/seed", (req, res) => {
   startEventStream()
+  res.send("hello world")
+})
+
+app.get("/f", (req, res) => {
+  seedFetch()
   res.send("hello world")
 })
 

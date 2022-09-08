@@ -26,6 +26,19 @@ export default function clipping(app, pg) {
       }
     })
   })
+  // update the thing?
+  
+  app.put("/clipping/:uuid", async(req, res) => {
+    const b = req.body;
+    const uuid = req.params.uuid;
+
+    await pg.update({x: b.x, y: b.y}).table("clippings").where({UUID: uuid}).returning("*").then((d) => {
+      res.send(d);
+    }).catch((e) => {
+        console.log(e)
+        res.status(401).send()
+    })    
+  })
 
   app.post("/clipping", async(req, res) => {
     console.log("saving")

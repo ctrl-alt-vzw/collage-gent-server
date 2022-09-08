@@ -7,6 +7,8 @@ import createTables from "./db/helpers.js";
 
 import annotation from './routes/annotation.js';
 import clipping from './routes/clipping.js';
+import error from './routes/error.js';
+
 
 const pg = knex({
   client: 'pg',
@@ -47,6 +49,11 @@ app.get("/", async (req, res) => {
         "GET /clipping": "display all records",
         "DELETE /clipping/[UUID]": "Delete a record",
         "POST /clipping": "Add a record, needs { originID, collection, x, y, imageURI }"
+      }, 
+      "errors": {
+        "GET /errors": "display all records",
+        "DELETE /error/[UUID]": "Delete a record",
+        "POST /error": "Add a record, needs { originID, collection, x, y, imageURI }"
       }
     },
     "version": "0.1"
@@ -55,6 +62,7 @@ app.get("/", async (req, res) => {
 
 annotation(app, pg);
 clipping(app, pg);
+error(app, pg);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);

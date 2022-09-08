@@ -58,9 +58,12 @@ services:
     image: "$OWNER/collageweb:$VERSION"
     command: ["npm", "run", "start"]
     restart: unless-stopped
+    ports:
+      - 8080:3000
     environment:
       WEB_PORT:
       NODE_ENV:
+      NODE_OPTIONS: --openssl-legacy-provider
 
 
   caddy:

@@ -46,14 +46,6 @@ services:
       - ./_uploads:/usr/app/uploads
 
 
-  # touch:
-  #   image: "$OWNER/collagetouch:$VERSION"
-  #   command: ["npm", "run", "start"]
-  #   restart: unless-stopped
-  #   environment:
-  #     TOUCH_PORT:
-  #     NODE_ENV:
-
   web:
     image: "$OWNER/collageweb:$VERSION"
     command: ["npm", "run", "start"]
@@ -64,7 +56,6 @@ services:
       WEB_PORT:
       NODE_ENV:
       NODE_OPTIONS: --openssl-legacy-provider
-
 
   caddy:
     image: caddy/caddy:2.2.1-alpine

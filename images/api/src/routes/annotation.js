@@ -17,7 +17,7 @@ export default function annotation(app, pg) {
     })
   })
   app.patch("/annotation/:uuid", async(req, res) => {
-    console.log(req.body)
+    // console.log(req.body)
     const toUpdate = {
       annotation: req.body.annotation
     }
@@ -29,8 +29,23 @@ export default function annotation(app, pg) {
       res.status(400).send(e)
     })
   })
+
+  app.patch("/annotation/:uuid/imagedata", async(req, res) => {
+    // console.log(req.body)
+    const toUpdate = {
+      imagedata: req.body
+    }
+    // console.log(toUpdate)
+    await pg.update(toUpdate).table("annotations").where({UUID: req.params.uuid}).returning("*").then((data) => {
+      res.send(data)
+    })
+    .catch(e => {
+      res.status(400).send(e)
+    })
+  })
+  
   app.post("/annotation", async(req, res) => {
-    console.log("saving")
+    // console.log("saving")
     const b = req.body;
     if(b.label && b.id && b.imageURI) {
       const toInsert = {

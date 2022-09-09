@@ -64,14 +64,14 @@ services:
       - ./images/seeder/src:/usr/app/src
       - ./_logs/seeder:/usr/app/logs
 
-  # web:
-  #   build: ./images/web
-  #   image: "$OWNER/collageweb:$VERSION"
-  #   command: ["npm", "run", "start"]
-  #   restart: always
-  #   environment:
-  #     NODE_OPTIONS: --openssl-legacy-provider
-  #   ports:
-  #     - 8080:3000
-  #   volumes:
-  #     - ./images/web/src:/usr/app/src
+  web:
+    build: ./images/touch
+    image: "$OWNER/collageweb:$VERSION"
+    # command: ["npm", "run", "start"]
+    restart: always
+    ports:
+      - 8080:3000
+      - 8081:80
+    volumes:
+      - ./images/touch/src:/usr/app/src
+      - ./images/touch/build:/usr/app/build

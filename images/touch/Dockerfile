@@ -1,4 +1,4 @@
-FROM node:17.4
+FROM node:17.4 as builder
 
 WORKDIR /usr/app
 
@@ -12,6 +12,8 @@ RUN npm run build
 
 FROM nginx:1.19
 
+RUN apt-get update && apt-get install -y npm
+
 COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
 
-COPY ./build /usr/share/nginx/html
+COPY --from=builder /usr/app/build /usr/share/nginx/html

@@ -80,4 +80,14 @@ export default function clipping(app, pg) {
     })
   })
 
+
+  app.get("/clipping/bottom", async (req, res) => {
+    await pg.select("*").table("clippings").orderBy("y", "DESC").limit(50).then((data) => {
+      res.send(data)
+    })
+    .catch((e) => {
+      res.status(500).send(e)
+    })
+  })
+
 }

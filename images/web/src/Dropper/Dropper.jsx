@@ -11,13 +11,25 @@ function Dropper(props) {
   const [data, setData] = React.useState([]);
   const [position, setPosition] = React.useState({})
   const [allowed, setAllowed] = React.useState(true);
+  const [yOffset, setYOffset] = React.useState([]);
 
   useEffect(() => {
     fetch("https://api.datacratie.cc/clipping")
       .then(r => r.json())
       .then((data) => {
         console.log("fetched clippings")
-        setData(data)
+        const total = data.reduce((a, b) => a + b.y, 0);
+        const yOff = (total / data.length)
+        setData(data.map((e) => {
+          if(e.UUID !== state.clipping.UUID) {
+            return {
+              ...e,
+              y: e.y - (yOff / 2)
+            }
+          }
+          return e
+        }))
+        setYOffset(yOff)
       })
   }, [])
 
@@ -25,22 +37,15 @@ function Dropper(props) {
     let tooClose = 0;
     data.forEach((other) => {
       if(other.UUID !== active.UUID) {
-
-        // const cx = x + (active.width / 2);
-        // const cy = y + (active.height / 2);
-        // const tx = other.x + (other.width / 2);
-        // const ty = other.y + (other.height / 2);
         const cx = x + (100 / 2);
         const cy = y + (100 / 2);
         const tx = other.x + (100 / 2);
         const ty = other.y + (100 / 2);
         
-        // const d = Math.sqrt( Math.pow((tx-cx), 2) + Math.pow((ty-cy), 2) );
 
         const d = Math.hypot(tx - cx, ty - cy)
-        const minimal = 150
+        const minimal = 65;
         if(d < minimal) {
-          // console.log("too close", d, minimal)
           tooClose +=1;
         }
       }
@@ -54,8 +59,6 @@ function Dropper(props) {
   }
 
   const handlePositioned = (position) => {
-
-    console.log("clipping", position)
     if(allowed) {
       fetch("https://api.datacratie.cc/clipping/"+state.clipping.UUID, {
         method: "PUT",
@@ -64,7 +67,7 @@ function Dropper(props) {
         },
         body: JSON.stringify({
           x: position.x,
-          y: position.y
+          y: position.y + (yOffset / 2)
         })
       })
         .then(r => r.json())

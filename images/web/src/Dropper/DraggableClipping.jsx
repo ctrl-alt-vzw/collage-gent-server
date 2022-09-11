@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import Clipping from './HTMLClipping'
+import Clipping from './Clipping'
 import interact from 'interactjs'
 
 
@@ -46,6 +46,7 @@ function DraggableClipping(props) {
   }, [])
   return (
     <div className="draggable" id={"image"+props.clipping_data.id}
+      onClick={() => console.log(props.clipping_data.id)}
         style={{
           opacity: canBeDropped ? 1 : 0.2
         }}>

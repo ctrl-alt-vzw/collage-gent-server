@@ -58,6 +58,9 @@ export default class CanvasClass extends React.Component {
     c.addEventListener("mousedown", () => this.mouseDown = true);
     c.addEventListener("mouseup", () => this.mouseDown = false);
     c.addEventListener("mousemove", (e) => this.mouseMoveHandler(e));
+    c.addEventListener("touchstart", () => this.mouseDown = true, false);
+    c.addEventListener("touchmove", (e) => this.mouseMoveHandler(e), false);
+    c.addEventListener("touchend", () => this.mouseDown = false, false);
     
     c.width = window.innerWidth - 10;
     c.height = window.innerHeight - 10;
@@ -65,6 +68,7 @@ export default class CanvasClass extends React.Component {
     const nc = document.getElementById("normal_canvas");
     nc.width = window.innerWidth - 10;
     nc.height = window.innerHeight - 10;
+
     this.loadImage()
     this.update();
     

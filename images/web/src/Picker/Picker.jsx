@@ -10,7 +10,7 @@ function Picker(props) {
   const [ data, setData ] = React.useState([]);
 
 useEffect(() => {
-    fetch("https://api.datacratie.cc/annotation")
+    fetch("https://api.datacratie.cc/annotation/random")
       .then(r => r.json())
       .then(data => {
 

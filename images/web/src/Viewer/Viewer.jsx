@@ -9,11 +9,16 @@ function Viewer(props) {
 
   const [ , dispatch ] = React.useContext(ManagerContext)
   const [data, setData] = React.useState([]);
+  const [yOffset, setYOffset] = React.useState([]);
+
 
   useEffect(() => {
     fetch("https://api.datacratie.cc/clipping")
       .then(r => r.json())
       .then((data) => {
+
+        const total = data.reduce((a, b) => a + b.y, 0);
+        setYOffset(total / data.length)
         setData(data)
       })
   }, [])
@@ -30,6 +35,7 @@ function Viewer(props) {
       {data.length === 0 ? <Loader message="loading clippings" /> : null}
       { data.map((clipping, key) => {
         clipping["zIndex"] = data.length - key;
+        clipping["yOffset"] = yOffset;
         return <Clipping clipping_data={clipping} key={key}  />
       })}
       <div id="header">

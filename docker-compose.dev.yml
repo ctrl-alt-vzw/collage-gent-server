@@ -67,7 +67,6 @@ services:
   web:
     build: ./images/web
     image: "$OWNER/collageweb:$VERSION"
-    # command: ["npm", "run", "start"]
     restart: always
     ports:
       - 8080:3000

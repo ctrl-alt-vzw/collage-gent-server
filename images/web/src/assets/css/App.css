@@ -112,3 +112,24 @@ button {
 #hiddenCanvasContainer {
   display:  none;
 }
+
+
+.dropActions {
+  position:  fixed;
+  background-blend-mode: multiply;
+  left:  calc(50% - 150px);
+  top:  calc(100% - 75px);
+  width:  300px;
+  padding:  25px 50px;
+  box-sizing: border-box;
+  height:  75px;
+  background-color: #fff;
+  text-align: center;
+}
+
+.inactive {
+  opacity:  .2;
+}
+.active {
+  opacity: 1;
+}

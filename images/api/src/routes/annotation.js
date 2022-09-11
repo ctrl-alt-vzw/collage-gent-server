@@ -44,6 +44,20 @@ export default function annotation(app, pg) {
     })
   })
   
+  app.patch("/annotation/:uuid/originalAnnotation", async(req, res) => {
+    // console.log(req.body)
+    const toUpdate = {
+      originalAnnotation: req.body.originalAnnotation
+    }
+    // console.log(toUpdate)
+    await pg.update(toUpdate).table("annotations").where({UUID: req.params.uuid}).returning("*").then((data) => {
+      res.send(data)
+    })
+    .catch(e => {
+      res.status(400).send(e)
+    })
+  })
+  
   app.post("/annotation", async(req, res) => {
     // console.log("saving")
     const b = req.body;

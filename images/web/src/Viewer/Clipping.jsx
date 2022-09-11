@@ -9,7 +9,7 @@ function Clipping(props) {
   useEffect(() => {
     document.getElementById("image_fixed"+props.clipping_data.id).style.left = (props.clipping_data.x * state.options.scale.viewing) +"px"
     document.getElementById("image_fixed"+props.clipping_data.id).style.top = (props.clipping_data.y * state.options.scale.viewing) +"px"
-    document.getElementById("image_fixed"+props.clipping_data.id).style.zIndex = props.clipping_data.zIndex
+    // document.getElementById("image_fixed"+props.clipping_data.id).style.zIndex = props.clipping_data.zIndex
 
   }, []);
   return (

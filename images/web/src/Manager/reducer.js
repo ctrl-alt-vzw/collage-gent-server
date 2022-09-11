@@ -8,7 +8,7 @@ const phases = {
 
 const options = {
   scale: {
-    viewing: 0.5,
+    viewing: 0.8,
     dropping: 1
   }
 }
@@ -47,8 +47,11 @@ export const reducer = (state, action) => {
 }
 
 export const initialState = {
-    "phase": phases.PICK,
-    "clipping": {},
-    "annotation": {}, 
-    options
+    "phase": 3,
+    "clipping": {
+    },
+    "annotation": {
+        
+    },
+    options: options
 }

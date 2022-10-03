@@ -38,9 +38,6 @@ function Viewer(props) {
         clipping["yOffset"] = yOffset;
         return <Clipping clipping_data={clipping} key={key}  />
       })}
-      <div id="header">
-        <button onClick={handleReturn}>Select your own</button>
-      </div>
     </div>
   )
 }

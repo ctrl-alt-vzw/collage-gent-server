@@ -110,11 +110,11 @@ export default function annotation(app, pg) {
   })
 
   app.get("/annotation/random", async (req, res) => {
+     // .whereNot({annotation: ""})
     await pg
       .select("*")
       .table("annotations")
       .limit(100)
-      .whereNot({annotation: ""})
       .orderByRaw('RANDOM()')
       .then((data) => {
         res.send(data)

@@ -14,7 +14,7 @@ function Dropper(props) {
   const [yOffset, setYOffset] = React.useState([]);
 
   useEffect(() => {
-    fetch("https://api.datacratie.cc/clipping")
+    fetch(`${process.env.REACT_APP_API_ADDR}/clipping`)
       .then(r => r.json())
       .then((data) => {
         console.log("fetched clippings")
@@ -60,7 +60,8 @@ function Dropper(props) {
 
   const handlePositioned = (position) => {
     if(allowed) {
-      fetch("https://api.datacratie.cc/clipping/"+state.clipping.UUID, {
+      // fetch("https://api.datacratie.cc/clipping/"+state.clipping.UUID, {
+      fetch(`${process.env.REACT_APP_API_ADDR}/clipping/${state.clipping.UUID}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json"

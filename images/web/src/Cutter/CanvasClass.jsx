@@ -1,9 +1,13 @@
 
 import React from 'react'
+import {concaveHull} from './concaveHull.js';
+
 import Tooltip from './../Common/Tooltip'
 
-const API_URL = "api.datacratie.cc";
-const FILESTORE_URL = "media.datacratie.cc";
+
+console.log(concaveHull)
+const API_URL = process.env.REACT_APP_API_ADDR;
+const FILESTORE_URL = process.env.REACT_APP_MEDIA_ADDR;
 
 const protocol = "https"
 const options = {
@@ -102,10 +106,10 @@ export default class CanvasClass extends React.Component {
         ctx.rect(t.x, t.y, 10, 10);
         ctx.stroke();
 
-        ctx.fillStyle = "red"
-        ctx.beginPath();
-        ctx.rect(this.centerpoint.x, this.centerpoint.y, 10, 10);
-        ctx.fill();
+        // ctx.fillStyle = "red"
+        // ctx.beginPath();
+        // ctx.rect(this.centerpoint.x, this.centerpoint.y, 10, 10);
+        // ctx.fill();
       })
     }
 
@@ -139,58 +143,15 @@ export default class CanvasClass extends React.Component {
     img.src = this.imageURI; // Set source path
   }
   calculateCircumference() {
-
-    var canvas = document.getElementById('canvas');
-    var ctx = canvas.getContext('2d');
     if(this.touchpoints.length > 0) {
-      this.outlinePoints = [];
-      let amount = Math.round(this.touchpoints.length / options.minimumRadia) + 1;
-      if(amount < options.minimumRadia) { amount = options.minimumRadia; }
-      // calc center
-      const t = {x: 0, y: 0};
-      for(let i = 0; i < this.touchpoints.length; i++) {
-        t.x += this.touchpoints[i].x;
-        t.y += this.touchpoints[i].y;
-      }
-      const centerX = Math.round(t.x / this.touchpoints.length);
-      const centerY = Math.round(t.y / this.touchpoints.length);
-      this.centerpoint = { x: centerX, y: centerY };
-      for(let i = 0; i < 360; i+=(360 / amount)) {
-        let max = 0;
-        for(let j = 0; j < window.innerWidth / 2; j+=4) {
-          const x = centerX + j * Math.sin(i *(Math.PI/180));
-          const y = centerY + j * Math.cos(i *(Math.PI/180));
-          
-          let dist = window.innerWidth;
-          for(let k = 0; k < this.touchpoints.length; k++) {
-            const d = Math.sqrt( Math.pow((this.touchpoints[k].x-x), 2) + Math.pow((this.touchpoints[k].y-y), 2) );
-            if(d < dist) { 
-              dist = d; 
-            }
-          }
-          
-          if(dist < options.slack) {
-             max = j;
-          }
+      const k = 10;
+      const tp = this.touchpoints.map((e) => [e.x, e.y]);
+      const hull = concaveHull.calculate(tp, k);
+      // console.log(hull);
+      this.outlinePoints = hull.map((e) => {
+        return{ x: e[0], y: e[1]}
+      })
 
-        }
-        const x = centerX + max * Math.sin(i * (Math.PI/180));
-        const y = centerY + max * Math.cos(i * (Math.PI/180));
-
-        if(options.show.radiusLines) {
-          ctx.fillStyle = "white";
-          ctx.fill();
-          ctx.beginPath();
-          ctx.rect(x, y, 5, 5);
-          ctx.stroke();
-
-          
-        }
-        if(max > 0) {
-          this.outlinePoints.push({x, y });
-        }
-      }
-      
     }
   }
   mouseMoveHandler(e) {
@@ -332,7 +293,7 @@ export default class CanvasClass extends React.Component {
     formData.append("normal", new Blob([normal_u8Image], { type: strMime }));
 
     console.log(formData)
-    fetch(`${protocol}://${FILESTORE_URL}/upload`, {
+    fetch(`${process.env.REACT_APP_MEDIA_ADDR}/upload`, {
       method: 'POST',
       body: formData
     })
@@ -349,7 +310,7 @@ export default class CanvasClass extends React.Component {
           height: clippingHeight,
           width: clippingWidth
         }
-        fetch(`${protocol}://${API_URL}/clipping`, {
+        fetch(`${process.env.REACT_APP_API_ADDR}/clipping`, {
           headers: {
             'Accept': 'application/json, text/plain, */*',
             'Content-Type': 'application/json'

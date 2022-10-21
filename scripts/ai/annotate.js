@@ -57,6 +57,8 @@ const run = async () => {
                 } catch (e) {
                     addError(0, task.UUID, "Failed adding annotation", e);
                 }
+            } else {
+                addError(0, task.UUID, "Could not get image", e);
             }
     
         }
@@ -68,7 +70,8 @@ const run = async () => {
 }
 
 const imageExists = async (url, id) => {
-    const response = await fetch(url);
+    //Needs part of URI now
+    const response = await fetch(`https://api.collectie.gent/iiif/image/iiif/3/${url}/info.json`);
     if(response.ok) {
         return true
     } else {
@@ -79,6 +82,8 @@ const imageExists = async (url, id) => {
 }
 
 const getAnnotation = async (imgUrl, model, beam) => {
+    const url = `https://api.collectie.gent/iiif/imageiiif/3/${imgUrl}/full/^1000,/0/default.jpg`;
+    console.log(imgUrl, url);
     try {
         const response = await fetch(ANNOTATION_SERVICE_URL, {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -89,14 +94,15 @@ const getAnnotation = async (imgUrl, model, beam) => {
               // 'Content-Type': 'application/x-www-form-urlencoded',
             },
             body: JSON.stringify({input: {
-                image: imgUrl,
+                image: url,
                 model: model,
                 use_beam_search: beam
               }}) // body data type must match "Content-Type" header
         })
         const json = await response.json();
+        console.log(json);
         if(!response.ok) {
-            addError(response.status, '', 'Error fetching annotation', imgUrl);
+            addError(response.status, '', 'HTTP Error fetching annotation', imgUrl);
         }
         if(json.status == 'success' && json.output.length) {
             console.log(json.output[0].text);
@@ -106,7 +112,8 @@ const getAnnotation = async (imgUrl, model, beam) => {
             throw Error(json.status);
         }
     } catch (e) {
-        console.log("Some error fetching annotation during request")
+        console.log("Some error fetching annotation during request");
+        console.log(e);
         throw Error(e);
     }
 }
